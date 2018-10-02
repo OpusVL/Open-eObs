@@ -28,25 +28,3 @@ services:
       timeout: 30s
       retries: 3
     restart: on-failure
-
-  adt-connector:
-    image: quay.io/opusvl/adt-connector:latest
-    environment:
-      USER: ${NHADT_DB_USER:-nhadt}
-      PASSWORD: ${NHADT_DB_PASSWORD:-nhadt}
-      HOST: ${NHADT_DB_HOST:-db-adt}
-    ports:
-      - "8888:8888"
-    restart: on-failure
-
-  postgresql-adt:
-    image: postgres:10.3
-    hostname: db-adt
-    environment:
-      POSTGRES_DB: ${NHADT_DATABASE:-nhadt}
-      POSTGRES_USER: ${NHADT_DB_USER:-nhadt}
-      POSTGRES_PASSWORD: ${NHADT_DB_PASSWORD:-nhadt}
-    restart: on-failure
-    volumes:
-      - ./setupPGSQLForAdt.sql:/docker-entrypoint-initdb.d/setupPGSQLForAdt.sql
-      - ./postgres-adt/data:/var/lib/postgresql/data
