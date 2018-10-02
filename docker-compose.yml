@@ -1,0 +1,48 @@
+version: '3'
+services:
+  odoo:
+    build: odoo
+#    image: quay.io/opusvl/openeobs-odoo:latest
+    depends_on:
+      - postgresql
+    environment:
+      USER: ${EOBS_DB_USER:-odoo}
+      PASSWORD: ${EOBS_DB_PASSWORD:-password}
+      HOST: ${EOBS_DB_HOST:-postgresql}
+      BACKUP_LOCATION: ${BACKUP_LOCATION:-/bcp/out}
+    restart: on-failure
+
+  postgresql:
+    image: postgres:10.1
+    environment:
+      POSTGRES_DB: ${EOBS_DATABASE:-odoo}
+      POSTGRES_USER: ${EOBS_DB_USER:-odoo}
+      POSTGRES_PASSWORD: ${EOBS_DB_PASSWORD:-password}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: on-failure
+
+  adt-connector:
+    image: quay.io/opusvl/adt-connector:latest
+    environment:
+      USER: ${NHADT_DB_USER:-nhadt}
+      PASSWORD: ${NHADT_DB_PASSWORD:-nhadt}
+      HOST: ${NHADT_DB_HOST:-db-adt}
+    ports:
+      - "8888:8888"
+    restart: on-failure
+
+  postgresql-adt:
+    image: postgres:10.3
+    hostname: db-adt
+    environment:
+      POSTGRES_DB: ${NHADT_DATABASE:-nhadt}
+      POSTGRES_USER: ${NHADT_DB_USER:-nhadt}
+      POSTGRES_PASSWORD: ${NHADT_DB_PASSWORD:-nhadt}
+    restart: on-failure
+    volumes:
+      - ./setupPGSQLForAdt.sql:/docker-entrypoint-initdb.d/setupPGSQLForAdt.sql
+      - ./postgres-adt/data:/var/lib/postgresql/data
