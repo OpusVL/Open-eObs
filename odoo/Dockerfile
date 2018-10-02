@@ -42,4 +42,3 @@ RUN apt -y purge \
             build-essential
 
 USER odoo
-
