@@ -2,9 +2,12 @@ version: '3'
 services:
   odoo:
     build: odoo
-#    image: quay.io/opusvl/openeobs-odoo:latest
+    image: quay.io/opusvl/openeobs:latest
+    container_name: open-eobs-odoo
     depends_on:
       - postgresql
+    ports:
+      - 8069:8069
     environment:
       USER: ${EOBS_DB_USER:-odoo}
       PASSWORD: ${EOBS_DB_PASSWORD:-password}
@@ -14,6 +17,7 @@ services:
 
   postgresql:
     image: postgres:10.1
+    container_name: open-eobs-postgres
     environment:
       POSTGRES_DB: ${EOBS_DATABASE:-odoo}
       POSTGRES_USER: ${EOBS_DB_USER:-odoo}
