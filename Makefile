@@ -30,4 +30,4 @@ destroy:
 logs:
 	docker-compose ${COMPOSE_DEBUG} logs -f
 
-.PHONY: run stop clean debug destroy logs
+.PHONY: run stop clean debug destroy logs test clone
