@@ -19,15 +19,13 @@ stop:
 
 clean:
 	docker-compose ${COMPOSE_RUN} down -v
+	docker-compose ${COMPOSE_DEBUG} down -v
 	rm -rf odoo/addon-bundles
 
 debug:
 	docker-compose ${COMPOSE_DEBUG} up -d
 
-destroy:
-	docker-compose ${COMPOSE_DEBUG} down -v
-
 logs:
 	docker-compose ${COMPOSE_DEBUG} logs -f
 
-.PHONY: run stop clean debug destroy logs test clone
+.PHONY: run stop clean debug logs test clone
