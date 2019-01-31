@@ -10,10 +10,12 @@ services:
       - 8069:8069
     environment:
       USER: ${EOBS_DB_USER:-odoo}
-      PASSWORD: ${EOBS_DB_PASSWORD:-password}
+      PASSWORD: ${EOBS_DB_PASSWORD:-changeme}
       HOST: ${EOBS_DB_HOST:-postgresql}
       BACKUP_LOCATION: ${BACKUP_LOCATION:-/bcp/out}
     restart: on-failure
+    volumes:
+      - "./bcp:/bcp/out"
 
   postgresql:
     image: postgres:10.1
@@ -21,7 +23,7 @@ services:
     environment:
       POSTGRES_DB: ${EOBS_DATABASE:-odoo}
       POSTGRES_USER: ${EOBS_DB_USER:-odoo}
-      POSTGRES_PASSWORD: ${EOBS_DB_PASSWORD:-password}
+      POSTGRES_PASSWORD: ${EOBS_DB_PASSWORD:-changeme}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 30s
