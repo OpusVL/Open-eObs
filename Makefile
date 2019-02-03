@@ -37,22 +37,24 @@ logs:
 	@docker-compose ${COMPOSE_FILE} logs -f
 
 debug-run:
-	@docker-compose ${COMPOSE_DEBUG} up --quiet-pull --build --no-start
 	@docker-compose ${COMPOSE_DEBUG} up -d
 
-debug-clean:
+debug-build:
+	@docker rmi open-eobs-odoo:local-build || true
+	@docker rmi open-eobs-odoo:latest || true
+	@docker pull quay.io/opusvl/odoo-custom:8.0
+	@docker-compose ${COMPOSE_DEBUG} up --quiet-pull --build --no-start
+
+debug-down:
 	@docker-compose ${COMPOSE_DEBUG} down -v
 
-debug-pr: debug-clean clean repo
+debug-pr: debug-down clean repo
 	@echo -n "Checking out PR ${PR} ... "
 	@echo
 	@git -C odoo/addon-bundles/Open-eObs-Modules fetch -q origin pull/${PR}/head:PR-${PR}
 	@git -C odoo/addon-bundles/Open-eObs-Modules checkout PR-${PR}
 
-debug-branch: debug-clean clean repo branch
-
-debug-down:
-	docker-compose ${COMPOSE_DEBUG} down -v
+debug-branch: debug-down clean repo branch
 
 debug-logs:
 	docker-compose ${COMPOSE_DEBUG} logs -f
