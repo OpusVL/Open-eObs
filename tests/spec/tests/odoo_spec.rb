@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Odoo 8.0 Docker image - Application" do
+describe "OpusVL odoo 8.0 Docker image - open-eObs" do
   before(:all) do
     set :os, family: :debian
     set :backend, :docker

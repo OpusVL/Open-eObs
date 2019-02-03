@@ -47,7 +47,7 @@ debug-build:
 	@docker-compose ${COMPOSE_DEBUG} up --quiet-pull --build --no-start
 
 debug-down:
-	@docker-compose ${COMPOSE_DEBUG} down -v
+	@docker-compose ${COMPOSE_DEBUG} down -v 
 
 debug-pr: debug-down clean repo
 	@echo -n "Checking out PR ${PR} ... "
@@ -64,8 +64,8 @@ debug-pgdump:
 	docker-compose ${COMPOSE_DEBUG} exec postgresql /usr/bin/pg_dump -U postgres nhclinical > nhclinical.sql
 	docker-compose ${COMPOSE_DEBUG} exec postgresql /usr/bin/pg_dumpall -U postgres > all-db.sql
 
-test:
-	@docker build -t open-eobs-rspec:${VERSION} -f odoo/Dockerfile-rspec .
+debug-test:
+	@docker build -t open-eobs-rspec:${VERSION} -f tests/Dockerfile .
 	@cd tests && bundle install
 	cd tests && VERSION=${VERSION} bundle exec rake spec
 	@rm -rf tests/vendor
