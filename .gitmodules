@@ -1,3 +1,3 @@
-[submodule "odoo/addon-bundles/Open-eObs-Modules"]
-	path = odoo/addon-bundles/Open-eObs-Modules
-	url = git@github.com:OpusVL/Open-eObs-Modules.git
+# [submodule "odoo/addon-bundles/Open-eObs-Modules"]
+# 	path = odoo/addon-bundles/Open-eObs-Modules
+# 	url = git@github.com:OpusVL/Open-eObs-Modules.git

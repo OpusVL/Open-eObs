@@ -1,0 +1,13 @@
+version: '3'
+services:
+  odoo:
+    volumes:
+      - "./odoo/openerp-server.conf:/etc/odoo/openerp-server.conf"
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    depends_on:
+      - postgresql
+    ports:
+      - 8080:8080
