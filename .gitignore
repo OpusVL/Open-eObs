@@ -1,6 +1,9 @@
 # ignore checkout dir
 odoo/addon-bundles
 
+# ignore vendor
+vendor
+
 # ignore sql
 *.sql
 

@@ -1,6 +1,7 @@
 #!/usr/bin/make
 COMPOSE_FILE = -f docker-compose.yml
 COMPOSE_DEBUG = -f docker-compose.yml -f docker-compose-debug.yml
+VERSION = local-build
 BRANCH = remove-custom-frequency
 PR = ${pr}
 
@@ -62,5 +63,12 @@ debug-logs:
 debug-pgdump:
 	docker-compose ${COMPOSE_DEBUG} exec postgresql /usr/bin/pg_dump -U postgres nhclinical > nhclinical.sql
 	docker-compose ${COMPOSE_DEBUG} exec postgresql /usr/bin/pg_dumpall -U postgres > all-db.sql
+
+test:
+	@docker build -t open-eobs-rspec:${VERSION} -f odoo/Dockerfile-rspec .
+	@bundle install
+	VERSION=${VERSION} bundle exec rake spec
+	@rm -rf vendor
+	@docker rmi open-eobs-rspec:${VERSION}
 
 # .PHONY: build clean clone logs run stop
