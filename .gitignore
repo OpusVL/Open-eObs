@@ -1,7 +1,8 @@
 # ignore checkout dir
 odoo/addon-bundles
 
-# ignore vendor
+# For rspec
+**/rspec*.xml
 vendor
 
 # ignore sql
