@@ -1,8 +1,9 @@
 version: '3'
 services:
   odoo:
-    build: odoo
-    image: quay.io/opusvl/openeobs:latest
+    build:
+      context: odoo
+    image: open-eobs-odoo:local-build
     container_name: open-eobs-odoo
     depends_on:
       - postgresql
