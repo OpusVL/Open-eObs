@@ -66,9 +66,9 @@ debug-pgdump:
 
 test:
 	@docker build -t open-eobs-rspec:${VERSION} -f odoo/Dockerfile-rspec .
-	@bundle install
-	VERSION=${VERSION} bundle exec rake spec
-	@rm -rf vendor
+	@cd tests && bundle install
+	cd tests && VERSION=${VERSION} bundle exec rake spec
+	@rm -rf tests/vendor
 	@docker rmi open-eobs-rspec:${VERSION}
 
 # .PHONY: build clean clone logs run stop
