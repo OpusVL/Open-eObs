@@ -2,7 +2,7 @@ version: '3'
 services:
   odoo:
     volumes:
-      - "./openerp-server.conf:/etc/odoo/openerp-server.conf"
+      - "./odoo/openerp-server.conf:/etc/odoo/openerp-server.conf"
 
   adminer:
     container_name: adminer
