@@ -49,16 +49,16 @@ debug-pr: debug-clean clean repo
 	@git -C odoo/addon-bundles/Open-eObs-Modules fetch -q origin pull/${PR}/head:PR-${PR}
 	@git -C odoo/addon-bundles/Open-eObs-Modules checkout PR-${PR}
 
-debug-branch: debug-clean clean repo
-	@echo -n "Checking out ${BRANCH} ... "
-	@echo
-	@git -C odoo/addon-bundles/Open-eObs-Modules fetch origin ${BRANCH}
-	@git -C odoo/addon-bundles/Open-eObs-Modules checkout -q ${BRANCH}
+debug-branch: debug-clean clean repo branch
 
 debug-down:
 	docker-compose ${COMPOSE_DEBUG} down -v
 
 debug-logs:
 	docker-compose ${COMPOSE_DEBUG} logs -f
+
+debug-pgdump:
+	docker-compose ${COMPOSE_DEBUG} exec postgresql /usr/bin/pg_dump -U postgres nhclinical > nhclinical.sql
+	docker-compose ${COMPOSE_DEBUG} exec postgresql /usr/bin/pg_dumpall -U postgres > all-db.sql
 
 # .PHONY: build clean clone logs run stop
