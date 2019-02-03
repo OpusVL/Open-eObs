@@ -1,7 +1,5 @@
 # Open-eObs
-A Dockerised implementation of open-eObs
-
-Open-eObs is a set of modules that sits on top of Odoo, these can be found in the [Open-eObs-Modules repo](https://github.com/OpusVL/Open-eObs-Modules).
+A Dockerised implementation of OpusVL's [Open-eObs-Modules](https://github.com/OpusVL/Open-eObs-Modules).
 
 
 # Contact Us
