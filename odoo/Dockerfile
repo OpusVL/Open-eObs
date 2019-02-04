@@ -1,4 +1,4 @@
-FROM quay.io/opusvl/odoo-custom:8.0
+FROM quay.io/opusvl/odoo-custom:8.0 AS Open-eObs-Modules-Base
 MAINTAINER James Curtis <james.curtis@opusvl.com>
 
 USER root
@@ -27,10 +27,6 @@ RUN chown -R odoo: /bcp
 COPY ./requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 
-RUN mkdir -p /mnt/extra-addons-bundles
-RUN chmod -R 755 /mnt/extra-addons-bundles
-COPY ./addon-bundles/ /mnt/extra-addons-bundles/
-
 RUN apt -y purge \
             gcc \
             g++ \
@@ -40,5 +36,11 @@ RUN apt -y purge \
             libxslt1-dev \
             libxslt-dev \
             build-essential
+
+FROM Open-eObs-Modules-Base
+
+RUN mkdir -p /mnt/extra-addons-bundles
+RUN chmod -R 755 /mnt/extra-addons-bundles
+COPY ./addon-bundles/ /mnt/extra-addons-bundles/
 
 USER odoo
