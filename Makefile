@@ -1,27 +1,31 @@
 #!/usr/bin/make
-COMPOSE_FILE = -f docker-compose.yml
-COMPOSE_DEBUG = -f docker-compose.yml -f docker-compose-debug.yml
-VERSION = local-build
-BRANCH = remove-custom-frequency
-PR = ${pr}
+COMPOSE_FILE := -f docker-compose.yml
+COMPOSE_DEBUG := -f docker-compose.yml -f docker-compose-debug.yml
+VERSION := local-build
+GIT_URL := https://github.com
+GIT_ORG ?= OpusVL
+GIT_REPO ?= Open-eObs-Modules
+GIT_PATH := ${GIT_URL}/${GIT_ORG}/${GIT_REPO}
+GIT_BRANCH ?= remove-custom-frequency
+GIT_PR = ${pr}
 
 all: clean repo branch build run
 
 repo:
-	@echo -n "Setting up repo https://github.com/OpusVL/Open-eObs-Modules ... "
-	@git init -q odoo/addon-bundles/Open-eObs-Modules || true
-	@git -C odoo/addon-bundles/Open-eObs-Modules remote add origin https://github.com/OpusVL/Open-eObs-Modules.git || true
+	@echo -n "Setting up repo ${GIT_PATH} ... "
+	@git init -q odoo/addon-bundles/${GIT_REPO} || true
+	@git -C odoo/addon-bundles/${GIT_REPO} remote add origin ${GIT_PATH}.git || true
 	@echo
 
 branch:
-	@echo -n "Checking out ${BRANCH} ... "
-	@git -C odoo/addon-bundles/Open-eObs-Modules fetch origin ${BRANCH}
-	@git -C odoo/addon-bundles/Open-eObs-Modules checkout -q ${BRANCH}
+	@echo -n "Checking out ${GIT_BRANCH} ... "
+	@git -C odoo/addon-bundles/${GIT_REPO} fetch origin ${GIT_BRANCH}
+	@git -C odoo/addon-bundles/${GIT_REPO} checkout -q ${GIT_BRANCH}
 	@echo
 
 clean:
-	@echo -n "Removing odoo/addon-bundles/Open-eObs-Modules ... "
-	@rm -rf odoo/addon-bundles/Open-eObs-Modules
+	@echo -n "Removing odoo/addon-bundles/${GIT_REPO} ... "
+	@rm -rf odoo/addon-bundles/${GIT_REPO}
 	@echo
 
 build:
@@ -47,13 +51,13 @@ debug-build:
 	@docker-compose ${COMPOSE_DEBUG} up --quiet-pull --build --no-start
 
 debug-down:
-	@docker-compose ${COMPOSE_DEBUG} down -v 
+	@docker-compose ${COMPOSE_DEBUG} down -v
 
 debug-pr: debug-down clean repo
 	@echo -n "Checking out PR ${PR} ... "
 	@echo
-	@git -C odoo/addon-bundles/Open-eObs-Modules fetch -q origin pull/${PR}/head:PR-${PR}
-	@git -C odoo/addon-bundles/Open-eObs-Modules checkout PR-${PR}
+	@git -C odoo/addon-bundles/${GIT_REPO} fetch -q origin pull/${GIT_PR}/head:PR-${GIT_PR}
+	@git -C odoo/addon-bundles/${GIT_REPO} checkout PR-${GIT_PR}
 
 debug-branch: debug-down clean repo branch
 
