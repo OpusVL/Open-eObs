@@ -1,3 +1,13 @@
+# ignore checkout dir
+odoo/addon-bundles
+
+# For rspec
+**/rspec*.xml
+vendor
+
+# ignore sql
+*.sql
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
